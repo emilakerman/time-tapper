@@ -91,7 +91,7 @@ class _CubeState extends State<Cube> with SingleTickerProviderStateMixin {
           begin: Matrix4.translationValues(0, 15, 0), end: Matrix4.identity())
       .animate(controller);
 
-  double size = 100;
+  double size = 200;
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -99,7 +99,7 @@ class _CubeState extends State<Cube> with SingleTickerProviderStateMixin {
         onTap: () {
           controller.forward().whenComplete(() {
             controller.reverse();
-            size = 100;
+            size = 200;
           });
           widget.click();
           setState(() {
@@ -108,9 +108,9 @@ class _CubeState extends State<Cube> with SingleTickerProviderStateMixin {
         },
         child: AnimatedContainer(
           transform: animation.value,
-          color: Colors.purple,
           duration: controller.duration!,
-          child: SizedBox(
+          child: Image.asset(
+            'assets/clickthisguy.png',
             height: size,
             width: size,
           ),
