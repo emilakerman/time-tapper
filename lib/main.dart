@@ -16,17 +16,30 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: Colors.black,
-        body: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 70),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const HeaderText(),
-              Cube(click: () => setState(() => points++)),
-              PointsWidget(points: points),
-            ],
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Colors.lightBlue[100]!,
+                Colors.white,
+              ],
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 70),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const HeaderText(),
+                Cube(click: () => setState(() => points++)),
+                PointsWidget(points: points),
+              ],
+            ),
           ),
         ),
       ),
@@ -42,7 +55,7 @@ class HeaderText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Text(
-      "Time to waste some time!",
+      "Wow nice job!",
       style: TextStyle(
         color: Colors.white,
         fontSize: 25,
@@ -67,7 +80,7 @@ class _PointsWidgetState extends State<PointsWidget> {
     return Text(
       widget.points.toString(),
       style: const TextStyle(
-        color: Colors.white,
+        color: Colors.black,
         fontSize: 25,
       ),
     );
