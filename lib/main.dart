@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:time_tapper/src/Tapping/AutoTapper/Presentation/auto_tap_icon.dart';
+import 'package:time_tapper/src/Tapping/DoubleTap/Presentation/double_tap_icon.dart';
+import 'package:time_tapper/src/Tapping/increments.dart';
 
 void main() {
   runApp(const MainApp());
@@ -15,6 +18,7 @@ class _MainAppState extends State<MainApp> {
   int points = 0;
   @override
   Widget build(BuildContext context) {
+    Increments increments = Increments(points: points);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -32,12 +36,42 @@ class _MainAppState extends State<MainApp> {
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 70),
-            child: Column(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const HeaderText(),
-                Cube(click: () => setState(() => points++)),
-                PointsWidget(points: points),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      points >= 10
+                          ? const DoubleTapIcon()
+                          : DoubleTapIcon.disabled(context),
+                    ],
+                  ),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const HeaderText(),
+                    Cube(
+                        click: () => setState(
+                              () => points == increments.increment(points),
+                            )),
+                    PointsWidget(points: points),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 15),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      points >= 20
+                          ? const AutoTapIcon()
+                          : AutoTapIcon.disabled(context),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
