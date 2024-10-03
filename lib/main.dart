@@ -54,10 +54,14 @@ class _MainAppState extends State<MainApp> {
                       points >= 10
                           ? InkWell(
                               onTap: () => setState(() {
+                                    if (doubleTapActivated) return;
                                     startAnimation = false;
                                     doubleTapActivated = true;
                                   }),
-                              child: const DoubleTapIcon())
+                              child: DoubleTapIcon(
+                                  color: doubleTapActivated
+                                      ? Colors.transparent.withOpacity(0.2)
+                                      : null))
                           : DoubleTapIcon.disabled(context),
                     ],
                   ),
