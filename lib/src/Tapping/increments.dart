@@ -1,11 +1,11 @@
-// TODO: Change this to cubit state
+// ignore: file_names
 class Increments {
   const Increments({
-    required this.points,
+    this.points,
   });
-  final int points;
+  final int? points;
 
-  int increment(int points) => points++;
+  int increment(int points) => ++points;
 
   int doubleIncrement(int points) => points = points + 2;
 }

@@ -14,11 +14,13 @@ class MainApp extends StatefulWidget {
   State<MainApp> createState() => _MainAppState();
 }
 
+int points = 0;
+bool doubleTapActivated = false;
+Increments increments = const Increments();
+
 class _MainAppState extends State<MainApp> {
-  int points = 0;
   @override
   Widget build(BuildContext context) {
-    Increments increments = Increments(points: points);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -45,7 +47,11 @@ class _MainAppState extends State<MainApp> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       points >= 10
-                          ? const DoubleTapIcon()
+                          ? InkWell(
+                              onTap: () => setState(() {
+                                    doubleTapActivated = true;
+                                  }),
+                              child: const DoubleTapIcon())
                           : DoubleTapIcon.disabled(context),
                     ],
                   ),
@@ -54,10 +60,15 @@ class _MainAppState extends State<MainApp> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const HeaderText(),
-                    Cube(
-                        click: () => setState(
-                              () => points == increments.increment(points),
-                            )),
+                    Cube(click: () {
+                      setState(() {
+                        if (!doubleTapActivated) {
+                          points = increments.increment(points);
+                        } else {
+                          points = increments.doubleIncrement(points);
+                        }
+                      });
+                    }),
                     PointsWidget(points: points),
                   ],
                 ),
