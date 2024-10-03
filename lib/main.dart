@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:time_tapper/src/Tapping/ArcAnimation/Presentation/arc_animation.dart';
 import 'package:time_tapper/src/Tapping/AutoTapper/Presentation/auto_tap_icon.dart';
 import 'package:time_tapper/src/Tapping/DoubleTap/Presentation/double_tap_icon.dart';
 import 'package:time_tapper/src/Tapping/increments.dart';
@@ -17,6 +18,7 @@ class MainApp extends StatefulWidget {
 }
 
 int points = 0;
+bool startAnimation = false;
 bool doubleTapActivated = false;
 Increments increments = const Increments();
 
@@ -62,12 +64,18 @@ class _MainAppState extends State<MainApp> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const HeaderText(),
-                    Cube(click: () {
-                      setState(() {
-                        points =
-                            increments.increment(points, doubleTapActivated);
-                      });
-                    }),
+                    Stack(
+                      children: [
+                        Cube(click: () {
+                          setState(() {
+                            startAnimation = true;
+                            points = increments.increment(
+                                points, doubleTapActivated);
+                          });
+                        }),
+                        ArcAnimation(clicked: startAnimation),
+                      ],
+                    ),
                     PointsWidget(points: points),
                   ],
                 ),
