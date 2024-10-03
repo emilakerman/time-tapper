@@ -18,8 +18,8 @@ class MainApp extends StatefulWidget {
 }
 
 int points = 0;
-bool startAnimation = false;
 bool doubleTapActivated = false;
+bool startAnimation = false;
 Increments increments = const Increments();
 
 class _MainAppState extends State<MainApp> {
@@ -53,6 +53,7 @@ class _MainAppState extends State<MainApp> {
                       points >= 10
                           ? InkWell(
                               onTap: () => setState(() {
+                                    startAnimation = false;
                                     doubleTapActivated = true;
                                   }),
                               child: const DoubleTapIcon())
@@ -66,14 +67,24 @@ class _MainAppState extends State<MainApp> {
                     const HeaderText(),
                     Stack(
                       children: [
-                        Cube(click: () {
-                          setState(() {
-                            startAnimation = true;
-                            points = increments.increment(
-                                points, doubleTapActivated);
-                          });
-                        }),
-                        ArcAnimation(clicked: startAnimation),
+                        Cube(
+                            key: _cubeKey,
+                            click: () {
+                              setState(() {
+                                startAnimation = true;
+                                points = increments.increment(
+                                    points, doubleTapActivated);
+                              });
+                            }),
+                        ArcAnimation(
+                          clicked: startAnimation,
+                          isReversed: false,
+                        ),
+                        if (doubleTapActivated)
+                          ArcAnimation(
+                            clicked: startAnimation,
+                            isReversed: true,
+                          ),
                       ],
                     ),
                     PointsWidget(points: points),
@@ -101,10 +112,13 @@ class _MainAppState extends State<MainApp> {
     );
   }
 
+  final GlobalKey<_CubeState> _cubeKey = GlobalKey<_CubeState>();
+
   void autoClicker() {
     Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         points = increments.increment(points, doubleTapActivated);
+        _cubeKey.currentState?._animateCube();
       });
     });
   }
@@ -118,7 +132,7 @@ class HeaderText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Text(
-      "Wow nice job!",
+      "",
       style: TextStyle(
         color: Colors.white,
         fontSize: 25,
@@ -168,19 +182,28 @@ class _CubeState extends State<Cube> with SingleTickerProviderStateMixin {
       .animate(controller);
 
   double size = 200;
+
+  void _animateCube() {
+    controller.forward().whenComplete(() {
+      controller.reverse();
+      size = 200;
+    });
+    setState(() {
+      size = size + 10;
+    });
+  }
+
+  void _startAnimation() {
+    _animateCube();
+    widget.click();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
       child: GestureDetector(
         onTap: () {
-          controller.forward().whenComplete(() {
-            controller.reverse();
-            size = 200;
-          });
-          widget.click();
-          setState(() {
-            size = size + 10;
-          });
+          _startAnimation();
         },
         child: AnimatedContainer(
           transform: animation.value,
