@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:time_tapper/src/Tapping/AutoTapper/Presentation/auto_tap_icon.dart';
 import 'package:time_tapper/src/Tapping/DoubleTap/Presentation/double_tap_icon.dart';
@@ -78,7 +80,9 @@ class _MainAppState extends State<MainApp> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       points >= 20
-                          ? const AutoTapIcon()
+                          ? InkWell(
+                              onTap: () => autoClicker(),
+                              child: const AutoTapIcon())
                           : AutoTapIcon.disabled(context),
                     ],
                   ),
@@ -89,6 +93,18 @@ class _MainAppState extends State<MainApp> {
         ),
       ),
     );
+  }
+
+  void autoClicker() {
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        if (!doubleTapActivated) {
+          points = increments.increment(points);
+        } else {
+          points = increments.doubleIncrement(points);
+        }
+      });
+    });
   }
 }
 
