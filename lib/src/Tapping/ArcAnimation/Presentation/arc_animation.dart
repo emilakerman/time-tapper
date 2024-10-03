@@ -29,37 +29,30 @@ class ArcAnimationState extends State<ArcAnimation>
 
   void initializeCoin() {
     double endX;
-    double endY;
 
     if (widget.isReversed) {
-      endX = -300.0; // Move to the left for reverse
-      endY = 100.0; // Mirrored Y movement
+      endX = -300.0;
     } else {
-      endX = 300.0; // Move to the right for forward
-      endY = 100.0; // Same Y movement for forward and reverse (mirrored arc)
+      endX = 300.0;
     }
 
-// Initialize the AnimationController
     _controller = AnimationController(
       duration: const Duration(milliseconds: 500),
       vsync: this,
     );
 
-// Define the X and Y Tweens for an arc-like motion
     _animationX = Tween<double>(begin: 75.0, end: endX).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
 
-// Y movement remains the same for both forward and reverse,
-// so the arc is symmetrical for both directions
     _animationY = TweenSequence<double>([
       TweenSequenceItem(
-        tween: Tween<double>(begin: 100.0, end: -100.0) // Arc goes up
+        tween: Tween<double>(begin: 100.0, end: -100.0)
             .chain(CurveTween(curve: Curves.easeOut)),
         weight: 50,
       ),
       TweenSequenceItem(
-        tween: Tween<double>(begin: -100.0, end: 0.0) // Arc comes down
+        tween: Tween<double>(begin: -100.0, end: 0.0)
             .chain(CurveTween(curve: Curves.easeIn)),
         weight: 50,
       ),
