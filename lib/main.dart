@@ -64,11 +64,8 @@ class _MainAppState extends State<MainApp> {
                     const HeaderText(),
                     Cube(click: () {
                       setState(() {
-                        if (!doubleTapActivated) {
-                          points = increments.increment(points);
-                        } else {
-                          points = increments.doubleIncrement(points);
-                        }
+                        points =
+                            increments.increment(points, doubleTapActivated);
                       });
                     }),
                     PointsWidget(points: points),
@@ -81,8 +78,9 @@ class _MainAppState extends State<MainApp> {
                     children: [
                       points >= 20
                           ? InkWell(
-                              onTap: () => autoClicker(),
-                              child: const AutoTapIcon())
+                              onTap: autoClicker,
+                              child: const AutoTapIcon(),
+                            )
                           : AutoTapIcon.disabled(context),
                     ],
                   ),
@@ -98,11 +96,7 @@ class _MainAppState extends State<MainApp> {
   void autoClicker() {
     Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
-        if (!doubleTapActivated) {
-          points = increments.increment(points);
-        } else {
-          points = increments.doubleIncrement(points);
-        }
+        points = increments.increment(points, doubleTapActivated);
       });
     });
   }
