@@ -21,6 +21,7 @@ int points = 0;
 bool doubleTapActivated = false;
 bool startAnimation = false;
 bool autoClickerEnabled = false;
+Color? autoClickerIconColor;
 Increments increments = const Increments();
 
 class _MainAppState extends State<MainApp> {
@@ -102,8 +103,21 @@ class _MainAppState extends State<MainApp> {
                     children: [
                       points >= 20
                           ? InkWell(
-                              onTap: autoClicker,
-                              child: const AutoTapIcon(),
+                              onTap: () {
+                                autoClickerEnabled = !autoClickerEnabled;
+                                if (!autoClickerEnabled) {
+                                  setState(() {
+                                    autoClickerIconColor = null;
+                                  });
+                                } else {
+                                  setState(() {
+                                    autoClickerIconColor =
+                                        Colors.transparent.withOpacity(0.2);
+                                  });
+                                }
+                                autoClicker();
+                              },
+                              child: AutoTapIcon(color: autoClickerIconColor),
                             )
                           : AutoTapIcon.disabled(context),
                     ],
@@ -120,14 +134,17 @@ class _MainAppState extends State<MainApp> {
   final GlobalKey<_CubeState> _cubeKey = GlobalKey<_CubeState>();
 
   void autoClicker() {
-    if (autoClickerEnabled) return;
+    // if (autoClickerEnabled) return;
     Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!autoClickerEnabled) {
+        timer.cancel();
+        return;
+      }
       setState(() {
         points = increments.increment(points, doubleTapActivated);
         _cubeKey.currentState?._animateCube();
       });
     });
-    autoClickerEnabled = true;
   }
 }
 
