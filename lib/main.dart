@@ -20,6 +20,7 @@ class MainApp extends StatefulWidget {
 int points = 0;
 bool doubleTapActivated = false;
 bool startAnimation = false;
+bool autoClickerEnabled = false;
 Increments increments = const Increments();
 
 class _MainAppState extends State<MainApp> {
@@ -115,12 +116,14 @@ class _MainAppState extends State<MainApp> {
   final GlobalKey<_CubeState> _cubeKey = GlobalKey<_CubeState>();
 
   void autoClicker() {
+    if (autoClickerEnabled) return;
     Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         points = increments.increment(points, doubleTapActivated);
         _cubeKey.currentState?._animateCube();
       });
     });
+    autoClickerEnabled = true;
   }
 }
 
