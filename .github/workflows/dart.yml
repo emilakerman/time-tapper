@@ -13,22 +13,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Set up the Flutter environment using the Flutter action
+
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: 'stable'  # You can specify a different version if needed
+          flutter-version: '3.22.0'
+
+
+      - name: Clean Flutter cache
+        run: flutter clean
 
       - name: Install dependencies
         run: flutter pub get
 
-      # Uncomment this step to verify the use of 'dart format' on each commit.
-      # - name: Verify formatting
-      #   run: dart format --output=none --set-exit-if-changed .
 
-      # Consider passing '--fatal-infos' for slightly stricter analysis.
+      - name: Verify formatting
+        run: dart format --output=none --set-exit-if-changed .
+
+
       - name: Analyze project source
         run: flutter analyze
 
-      # Running Flutter tests
+
       - name: Run tests
         run: flutter test
