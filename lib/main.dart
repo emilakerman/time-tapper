@@ -141,8 +141,8 @@ class _MainAppState extends State<MainApp> {
         return;
       }
       setState(() {
+        _cubeKey.currentState?._animateClock();
         points = increments.increment(points, doubleTapActivated);
-        _cubeKey.currentState?._animateCube();
       });
     });
   }
@@ -223,7 +223,7 @@ class _CubeState extends State<Cube> with SingleTickerProviderStateMixin {
 
   double size = 200;
 
-  void _animateCube() {
+  void _animateClock() {
     controller.forward().whenComplete(() {
       controller.reverse();
       size = 200;
@@ -234,7 +234,7 @@ class _CubeState extends State<Cube> with SingleTickerProviderStateMixin {
   }
 
   void _startAnimation() {
-    _animateCube();
+    _animateClock();
     widget.click();
   }
 

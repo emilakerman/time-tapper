@@ -92,11 +92,6 @@ class ArcAnimationState extends State<ArcAnimation>
               width: 50,
               color: color,
             ),
-            // child: Container(
-            //   width: 50,
-            //   height: 50,
-            //   color: color,
-            // ),
           );
         },
       ),
