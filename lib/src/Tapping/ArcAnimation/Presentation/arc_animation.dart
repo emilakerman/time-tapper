@@ -65,10 +65,10 @@ class ArcAnimationState extends State<ArcAnimation>
     super.dispose();
   }
 
-  Color color = Colors.transparent;
+  Color? color = Colors.transparent;
 
   void _startAnimation() {
-    color = Colors.orange;
+    color = null;
     _controller.forward().whenComplete(() {
       color = Colors.transparent;
       _controller.reset();
@@ -86,11 +86,17 @@ class ArcAnimationState extends State<ArcAnimation>
         builder: (context, child) {
           return Transform.translate(
             offset: Offset(_animationX.value, _animationY.value),
-            child: Container(
-              width: 50,
+            child: Image.asset(
+              'assets/coin_gif.gif',
               height: 50,
+              width: 50,
               color: color,
             ),
+            // child: Container(
+            //   width: 50,
+            //   height: 50,
+            //   color: color,
+            // ),
           );
         },
       ),
