@@ -178,12 +178,28 @@ class PointsWidget extends StatefulWidget {
 class _PointsWidgetState extends State<PointsWidget> {
   @override
   Widget build(BuildContext context) {
-    return Text(
-      widget.points.toString(),
-      style: const TextStyle(
-        color: Colors.black,
-        fontSize: 25,
-      ),
+    return Stack(
+      children: [
+        Text(
+          widget.points.toString(),
+          style: TextStyle(
+            fontSize: 40,
+            fontWeight: FontWeight.bold,
+            foreground: Paint()
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = 6
+              ..color = Colors.black,
+          ),
+        ),
+        Text(
+          widget.points.toString(),
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 40,
+          ),
+        ),
+      ],
     );
   }
 }
