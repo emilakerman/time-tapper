@@ -8,15 +8,19 @@ class Increments {
 
   int increment(int points, bool isDouble) {
     if (!isDouble) {
-      return incrementSingle(points);
+      return tap(points);
     } else {
-      return doubleIncrement(points);
+      return doubleTap(points);
     }
   }
 
-  int incrementSingle(int points) => ++points;
+  int tap(int points) => ++points;
 
-  int doubleIncrement(int points) => points = points + 2;
+  int doubleTap(int points) => points = points + 2;
+
+  int superTap(int points) => points = (points * 1.4).round();
+
+  int megaTap(int points) => points = (points * 1.7).round();
 
   // 50/50 Gamble to either double current points or lose them all.
   int gamblePoints(int points) {
