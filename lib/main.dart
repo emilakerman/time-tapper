@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:time_tapper/src/Tapping/ArcAnimation/Presentation/arc_animation.dart';
 import 'package:time_tapper/src/Tapping/AutoTapper/Presentation/auto_tap_icon.dart';
 import 'package:time_tapper/src/Tapping/DoubleTap/Presentation/double_tap_icon.dart';
+import 'package:time_tapper/src/Tapping/GambleTap/Presentation/gamble_tap_icon.dart';
 import 'package:time_tapper/src/Tapping/increments.dart';
 
 void main() {
@@ -19,6 +20,7 @@ class MainApp extends StatefulWidget {
 
 int points = 0;
 bool doubleTapActivated = false;
+bool gambleTapActivated = false;
 bool startAnimation = false;
 bool autoClickerEnabled = false;
 Color? autoClickerIconColor;
@@ -64,6 +66,18 @@ class _MainAppState extends State<MainApp> {
                                       ? Colors.transparent.withOpacity(0.2)
                                       : null))
                           : DoubleTapIcon.disabled(context),
+                      points >= 40
+                          ? InkWell(
+                              onTap: () => setState(() {
+                                    if (gambleTapActivated) return;
+                                    gambleTapActivated = true;
+                                    points = increments.gamblePoints(points);
+                                  }),
+                              child: GambleTapIcon(
+                                  color: gambleTapActivated
+                                      ? Colors.transparent.withOpacity(0.2)
+                                      : null))
+                          : GambleTapIcon.disabled(context),
                     ],
                   ),
                 ),
